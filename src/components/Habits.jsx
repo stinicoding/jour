@@ -2,6 +2,8 @@ import { useState } from "react";
 //import { TextField, Button } from "@mui/material";
 import good from "../pictures/smiley_good.jpg";
 import bad from "../pictures/smiley_bad.jpg";
+import axios from "axios";
+import URL from "../config.js"
 
 function Habits() {
   const [newHabit, setNewHabit] = useState("");
@@ -9,12 +11,23 @@ function Habits() {
   const [goodHabits, setGoodHabits] = useState([]);
   const [badHabits, setBadHabits] = useState([]);
 
-  console.log(newHabit)
-  console.log(goodHabits)
-  console.log(badHabits)
+  console.log(newHabit);
+  console.log(goodHabits);
+  console.log(badHabits);
 
   const toggleSmiley = () => {
     setSmiley((prev) => (prev === "good" ? "bad" : "good"));
+  };
+
+  const saveHabit = async () => {
+    try {
+      await axios.post(`${URL}/habits/newhabit`, {
+        name: newHabit,
+        typeofhabit: smiley,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const addNewHabit = () => {
@@ -27,23 +40,22 @@ function Habits() {
       badHabitsCopy.push(newHabit);
       setBadHabits(badHabitsCopy);
     }
+    saveHabit()
   };
 
   return (
     <div>
       <section>
-        <h3 className="center">
-          add new {smiley} habit
-        </h3>
+        <h3 className="center">add new {smiley} habit</h3>
         <div className="flex">
-        <img
-          className="smiley clickable"
-          src={smiley === "good" ? good : bad}
-          onClick={toggleSmiley}
-        />
-        <input onChange={(e) => setNewHabit(e.target.value)} />
-        <button onClick={addNewHabit}>+ add</button>
-      </div>
+          <img
+            className="smiley clickable"
+            src={smiley === "good" ? good : bad}
+            onClick={toggleSmiley}
+          />
+          <input onChange={(e) => setNewHabit(e.target.value)} />
+          <button onClick={addNewHabit}>+ add</button>
+        </div>
       </section>
       <section className="habit_list">
         <div>
