@@ -40,6 +40,12 @@ input, p, ul, li, h3 {
     gap: 50px;
 }
 
+.habit_list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .header {
     background-color: #719daa;
     padding: 10px;
