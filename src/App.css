@@ -1,5 +1,5 @@
 section {
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 
 button {
@@ -9,6 +9,14 @@ button {
     border-radius: 5px;
     font-family: 'Courier New', Courier, monospace; 
     font-size: 24;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 28px;
+    color: #719daa;
 }
 
 input, p, ul, li, h3 {
@@ -68,10 +76,10 @@ input, p, ul, li, h3 {
 }
 
 .week {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
     justify-content: center;
-    gap: 10px;
-    padding: 20px;
+    margin: 0% 25% ;
 }
 
 .week section {
@@ -86,5 +94,21 @@ input, p, ul, li, h3 {
 
 .clickable {
     cursor: pointer;
+}
+
+.calendar-month {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    justify-content: center;
+    margin: 0% 25% ;
+}
+
+.calendar-day {
+    display: flex;
+    align-items: top;
+    justify-content: center;
+    border: 1px solid #719daa;
+    width: 80px; 
+    height: 80px;
 }
 
