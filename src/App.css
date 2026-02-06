@@ -7,7 +7,7 @@ button {
     background-color: #719daa;
     border: none;
     border-radius: 5px;
-    font-family: 'Courier New', Courier, monospace; 
+    font-family: 'Courier New', Courier, monospace;
     font-size: 24;
 }
 
@@ -19,13 +19,18 @@ h1 {
     color: #719daa;
 }
 
-input, p, ul, li, h3 {
-    font-family: 'Courier New', Courier, monospace; 
+input,
+p,
+ul,
+li,
+h3 {
+    font-family: 'Courier New', Courier, monospace;
     font-size: 16px;
     color: #353535;
 }
 
-.bold, h3 {
+.bold,
+h3 {
     font-weight: 600;
 }
 
@@ -75,17 +80,29 @@ input, p, ul, li, h3 {
     color: white;
 }
 
+.startpage {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    align-items: center;
+}
+
 .week {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     justify-content: center;
-    margin: 0% 25% ;
+    margin: 0% 20%;
 }
 
-.week section {
-    text-align: center;
-    border: 1px solid #719daa;
+.week-day {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #719daa;
+    color: white;
+    border: 1px solid white;
     width: 80px;
+    height: 40px;
+    margin-bottom: 5px;
 }
 
 .smiley {
@@ -100,7 +117,14 @@ input, p, ul, li, h3 {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     justify-content: center;
-    margin: 0% 25% ;
+    margin: 0% 20%;
+}
+
+.calendar-blank {
+    display: flex;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 5px;
 }
 
 .calendar-day {
@@ -108,7 +132,13 @@ input, p, ul, li, h3 {
     align-items: top;
     justify-content: center;
     border: 1px solid #719daa;
-    width: 80px; 
+    width: 80px;
     height: 80px;
+    margin-bottom: 5px;
 }
 
+.current-day {
+    color: white;
+    background-color: #719daa;
+    border-radius: 20px;
+}

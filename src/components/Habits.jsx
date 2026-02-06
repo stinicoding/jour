@@ -10,6 +10,7 @@ function Habits() {
   const [smiley, setSmiley] = useState("good");
   const [goodHabits, setGoodHabits] = useState([]);
   const [badHabits, setBadHabits] = useState([]);
+  const [today, setToday] = useState(new Date().toLocaleDateString("en-US"));
 
   //console.log(newHabit);
   //console.log(goodHabits);
@@ -69,6 +70,9 @@ function Habits() {
 
   return (
     <div>
+      <section className="center">
+        <p>Today: {today}</p>
+      </section>
       <section>
         <h3 className="center">add new {smiley} habit</h3>
         <div className="flex">
