@@ -16,7 +16,7 @@ function Month() {
     const days = new Date(year, month + 1, 0).getDate();
     //finding out the weekday of first of current month - sunday 0 to saturday 6
     const first_day = new Date(year, month, 1);
-    console.log(first_day)
+    //console.log(first_day)
     let first_weekday = first_day.getDay();
     if (first_weekday === 0) {
       first_weekday = 7
@@ -41,7 +41,7 @@ function Month() {
       <section className="calendar-month">
         {daysOfMonth.map((d, i) => (
           <article key={i} className={d===""? "calendar-blank":"calendar-day"}>
-            <p>{d}</p>
+            <p className={d===new Date().getDate() ? "calendar-today" : ""}>{d}</p>
           </article>
         ))}
       </section>

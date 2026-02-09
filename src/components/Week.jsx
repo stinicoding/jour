@@ -15,9 +15,9 @@ function Week() {
     <div>
       <section className="week">
         {days.map((day, i) => (
-          <acticle key={i} className="week-day">
+          <article key={i} className="week-day">
             {day}
-          </acticle>
+          </article>
         ))}
       </section>
     </div>

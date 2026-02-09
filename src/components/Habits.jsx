@@ -19,9 +19,9 @@ function Habits() {
   const getHabits = async () => {
     try {
       const res = await axios.get(`${URL}/habits`);
-      //console.log(res);
-      setGoodHabits(res.data.good.map((hab) => hab.name) || []);
-      setBadHabits(res.data.bad.map((hab) => hab.name) || []);
+      //console.log(res.data.good);
+      setGoodHabits(res.data.good);
+      setBadHabits(res.data.bad);
     } catch (error) {
       console.log(error);
     }
@@ -36,23 +36,38 @@ function Habits() {
       await axios.post(`${URL}/habits/newhabit`, {
         name: newHabit,
         typeofhabit: smiley,
+        color: "#ffffff",
       });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const addNewHabit = () => {
+  const addNewHabit = async () => {
+    const habObj = {
+      name: newHabit,
+      color: "#ffffff",
+    };
     if (smiley === "good") {
-      let goodHabitsCopy = [...goodHabits];
-      goodHabitsCopy.push(newHabit);
-      setGoodHabits(goodHabitsCopy);
+      setGoodHabits((prev) => [...prev, habObj]);
     } else if (smiley === "bad") {
-      let badHabitsCopy = [...badHabits];
-      badHabitsCopy.push(newHabit);
-      setBadHabits(badHabitsCopy);
+      setBadHabits((prev) => [...prev, habObj]);
     }
-    saveHabit();
+    await saveHabit();
+  };
+
+  const updateHabit = async (name, typeofhabit, color) => {
+    //console.log(typeof color);
+    try {
+      await axios.patch(`${URL}/habits/updatehabit`, {
+        name: name,
+        typeofhabit: typeofhabit,
+        color: color,
+      });
+      getHabits();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const deleteHabit = async (hab) => {
@@ -89,18 +104,36 @@ function Habits() {
         <div>
           <ul className="bold">good habits</ul>
           {goodHabits?.map((hab) => (
-            <li key={hab}>
-              <p>{hab}</p>
-              <button onClick={() => deleteHabit(hab)}>x</button>
+            <li key={hab.name}>
+              <p>{hab.name}</p>
+              <div className="habit_adjustments">
+                <input
+                  type="color"
+                  className="colorpicker"
+                  value={hab.color}
+                  onChange={(e) =>
+                    updateHabit(hab.name, "good", e.target.value)
+                  }
+                />
+                <button onClick={() => deleteHabit(hab.name)}>x</button>
+              </div>
             </li>
           ))}
         </div>
         <div>
           <ul className="bold">bad habits</ul>
           {badHabits?.map((hab) => (
-            <li key={hab}>
-              <p>{hab}</p>
-              <button onClick={() => deleteHabit(hab)}>x</button>
+            <li key={hab.name}>
+              <p>{hab.name}</p>
+              <div className="habit_adjustments">
+                <input
+                  type="color"
+                  className="colorpicker"
+                  value={hab.color}
+                  onChange={(e) => updateHabit(hab.name, "bad", e.target.value)}
+                />
+                <button onClick={() => deleteHabit(hab.name)}>x</button>
+              </div>
             </li>
           ))}
         </div>
