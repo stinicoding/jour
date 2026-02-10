@@ -5,11 +5,9 @@ import bad from "../pictures/smiley_bad.jpg";
 import axios from "axios";
 import URL from "../config.js";
 
-function Habits() {
+function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits }) {
   const [newHabit, setNewHabit] = useState("");
   const [smiley, setSmiley] = useState("good");
-  const [goodHabits, setGoodHabits] = useState([]);
-  const [badHabits, setBadHabits] = useState([]);
   const [today, setToday] = useState(new Date().toLocaleDateString("en-US"));
 
   //console.log(newHabit);

@@ -6,7 +6,7 @@ button {
     color: white;
     background-color: #719daa;
     border: none;
-    border-radius: 5px;
+    border-radius: 3px;
     font-family: 'Courier New', Courier, monospace;
     font-size: 24;
     cursor: pointer;
@@ -114,7 +114,10 @@ h3 {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
     background-color: #719daa;
+    border-radius: 3px;
     color: white;
     border: 1px solid white;
     width: 80px;
@@ -149,9 +152,11 @@ h3 {
     align-items: top;
     justify-content: center;
     border: 1px solid #719daa;
+    border-radius: 3px;
     width: 80px;
     height: 80px;
     margin-bottom: 5px;
+    cursor: pointer;
 }
 
 .calendar-today {
@@ -160,7 +165,20 @@ h3 {
     align-items: center;
     color: white;
     background-color: #719daa;
-    border-radius: 10px;
+    padding: 3px;
+    border-radius: 20px;
     width: 20px;
     height: 20px;
+}
+
+.dialog-caption {
+    font-family: 'Courier New', Courier, monospace !important;
+    font-weight: 600 !important;
+    color: #719daa;
+}
+
+.dialog-habits {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 }
