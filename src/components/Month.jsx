@@ -9,20 +9,29 @@ import {
 } from "@mui/material";
 
 function Month({ habits }) {
-  const [currentMonth, setCurrentMonth] = useState(
+  const [selectedMonthIndex, setSelectedMonthIndex] = useState(
+    new Date().getMonth(),
+  );
+  const [selectedMonthName, setSelectedMonthName] = useState(
     new Date().toLocaleString("en-US", { month: "long" }),
   );
+  const [selectedDay, setSelectedDay] = useState(new Date());
   const [daysOfMonth, setDaysOfMonth] = useState([]);
   const [open, setOpen] = useState(false);
+  const [checked, setChecked] = useState(false);
 
-  //console.log(currentMonth);
+  //console.log(selectedMonthIndex);
+  console.log(selectedDay);
+
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth(); //index for month
+  const days = new Date(year, month + 1, 0).getDate();
+
+  const saveHabits = () => {};
 
   useEffect(() => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth(); //index for month
-    const days = new Date(year, month + 1, 0).getDate();
-    //finding out the weekday of first of current month - sunday 0 to saturday 6
+    //finding out the weekday of first of selected month - sunday 0 to saturday 6
     const first_day = new Date(year, month, 1);
     //console.log(first_day)
     let first_weekday = first_day.getDay();
@@ -44,14 +53,21 @@ function Month({ habits }) {
 
   return (
     <div>
-      <h1>{currentMonth}</h1>
+      <h1>{selectedMonthName}</h1>
       <Week />
       <section className="calendar-month">
         {daysOfMonth.map((d, i) => (
           <article
             key={i}
             className={d === "" ? "calendar-blank" : "calendar-day"}
-            onClick={() => setOpen(true)}
+            onClick={
+              d !== ""
+                ? () => {
+                    setOpen(true);
+                    setSelectedDay(new Date(year, selectedMonthIndex, d));
+                  }
+                : undefined
+            }
           >
             <p className={d === new Date().getDate() ? "calendar-today" : ""}>
               {d}
@@ -60,26 +76,43 @@ function Month({ habits }) {
         ))}
       </section>
       {open && (
-        <Dialog open={open}>
-          <DialogTitle className="dialog-caption">
-            Add habits for this day
-          </DialogTitle>
-          <DialogContent>
-            {habits?.map((hab, i) => (
-              <article className="dialog-habits">
-                <div
-                  style={{
-                    width: 12,
-                    height: 12,
-                    backgroundColor: hab.color,
-                    borderRadius: 3,
-                    marginRight: 8,
-                  }}
-                ></div>
-                <p key={i}>{hab.name}</p>
-              </article>
-            ))}
-          </DialogContent>
+        <Dialog open={open} onClose={() => setOpen(false)}>
+          <section className="dialog-caption-flex">
+            <DialogTitle className="dialog-caption">
+              add habits for this day
+            </DialogTitle>
+            <button className="button-close" onClick={() => setOpen(false)}>
+              x
+            </button>
+          </section>
+          <section>
+            <DialogContent>
+              {habits?.map((hab, i) => (
+                <article key={i} className="dialog-habits-flex">
+                  <div className="dialog-habits">
+                    <div
+                      style={{
+                        width: 12,
+                        height: 12,
+                        backgroundColor: hab.color,
+                        borderRadius: 3,
+                        marginRight: 8,
+                      }}
+                    ></div>
+                    <p>{hab.name}</p>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={(e) => setChecked(e.target.checked)}
+                  />
+                </article>
+              ))}
+              <button className="button-save" onClick={() => saveHabits()}>
+                save
+              </button>
+            </DialogContent>
+          </section>
         </Dialog>
       )}
     </div>

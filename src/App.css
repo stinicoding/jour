@@ -182,3 +182,25 @@ h3 {
     align-items: center;
     cursor: pointer;
 }
+
+.dialog-caption-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0px;
+}
+
+.dialog-habits-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0px;
+}
+
+.button-close {
+    margin-right: 15px;
+}
+
+.button-save {
+    margin-top: 25px;
+}
