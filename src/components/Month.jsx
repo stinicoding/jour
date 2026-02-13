@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+import URL from "../config.js";
 import Week from "../components/Week";
 import {
   Dialog,
-  DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
 } from "@mui/material";
 
@@ -18,17 +18,40 @@ function Month({ habits }) {
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [daysOfMonth, setDaysOfMonth] = useState([]);
   const [open, setOpen] = useState(false);
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState({}); // {1: true, 2: false, 3: true}
 
   //console.log(selectedMonthIndex);
-  console.log(selectedDay);
+  //console.log(selectedDay);
+  //console.log(checked);
+  //console.log(habits)
 
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth(); //index for month
   const days = new Date(year, month + 1, 0).getDate();
 
-  const saveHabits = () => {};
+  const trackHabits = async () => {
+    const checkedHabits = Object.keys(checked)
+      .filter((id) => checked[id] === true)
+      .map(Number);
+    //console.log(checkedHabits)
+    let arr_habits = [];
+    for (let i = 0; i < checkedHabits.length; i++) {
+      arr_habits.push(habits[checkedHabits[i]]);
+    }
+    try {
+      for (let i = 0; i < arr_habits.length; i++) {
+        //console.log(selectedDay, arr_habits[i]._id, arr_habits[i].name)
+        const habitlog = await axios.post(`${URL}/habitlog/newlog`, {
+          date: selectedDay,
+          habit_id: arr_habits[i]._id,
+          habit_name: arr_habits[i].name,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     //finding out the weekday of first of selected month - sunday 0 to saturday 6
@@ -103,12 +126,14 @@ function Month({ habits }) {
                   </div>
                   <input
                     type="checkbox"
-                    checked={checked}
-                    onChange={(e) => setChecked(e.target.checked)}
+                    checked={checked[i] || false}
+                    onChange={
+                      (e) => setChecked((prev) => ({ ...prev, [i]: !prev[i] })) //change Checkbox with Index between true and false
+                    }
                   />
                 </article>
               ))}
-              <button className="button-save" onClick={() => saveHabits()}>
+              <button className="button-save" onClick={() => trackHabits()}>
                 save
               </button>
             </DialogContent>

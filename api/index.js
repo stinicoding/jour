@@ -33,6 +33,7 @@ app.use(
 );
 //==========================================================================
 app.use("/api/habits", require("./routes/habits.js"));
+app.use("/api/habitlog", require("./routes/habitLog.js"));
 //==========================================================================
 module.exports = app;
 if (process.env.NODE_ENV !== "production") {
