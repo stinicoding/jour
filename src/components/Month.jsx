@@ -15,16 +15,15 @@ function Month({ habits }) {
   const [daysOfMonth, setDaysOfMonth] = useState([]);
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState({}); // {1: true, 2: false, 3: true}
-  const [trackedOfMonth, setTrackedOfMonth] = useState([])
+  const [trackedOfMonth, setTrackedOfMonth] = useState([]);
   const [habitsPerDay, setHabitsPerDay] = useState({});
-
 
   //console.log(selectedMonthIndex);
   //console.log(selectedDay);
   //console.log(checked);
-  //console.log(habits)
-  console.log(trackedOfMonth)
-  console.log(habitsPerDay)
+  console.log(habits); //array containing objects
+  console.log(trackedOfMonth);
+  console.log(habitsPerDay); //object containing arrays
 
   const now = new Date();
   const year = now.getFullYear();
@@ -53,32 +52,47 @@ function Month({ habits }) {
           habit_name: arr_habits[i].name,
         });
       }
+      await getTrackedHabits();
+      setChecked({}); //reset checkboxes
+      setOpen(false);
     } catch (error) {
       console.log(error);
     }
+    setOpen(false);
   };
 
   const getTrackedHabits = async () => {
     try {
-      const response = await axios.get(`${URL}/habitlog/gettracked/${first_day}/${last_day}`);
+      const response = await axios.get(
+        `${URL}/habitlog/gettracked/${first_day}/${last_day}`,
+      );
       //console.log(response.data.data)
-      setTrackedOfMonth(response.data.data)
+      setTrackedOfMonth(response.data.data);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const getColorsForDay = (dateObj) => {
+    const key = dateObj.toISOString().slice(0, 10); // "2026-02-14"
+    const ids = habitsPerDay[key] || [];
+    return ids
+      .map((id) => habits.find((h) => h._id === id))
+      .filter(Boolean)
+      .map((h) => h.color);
+  };
+
   useEffect(() => {
-    const map = {}
+    const map = {};
     for (const log of trackedOfMonth) {
       const day = new Date(log.date).toISOString().slice(0, 10); // "2026-02-13"
       if (!map[day]) {
-        map[day] = []
+        map[day] = [];
       }
-      map[day].push(log.habit_id)
+      map[day].push(log.habit_id);
     }
-    setHabitsPerDay(map)
-  }, [trackedOfMonth])
+    setHabitsPerDay(map);
+  }, [trackedOfMonth]);
 
   useEffect(() => {
     //finding out the weekday of first of selected month - sunday 0 to saturday 6
@@ -130,15 +144,22 @@ function Month({ habits }) {
               </p>
             </div>
             <div>
-              <div
-                style={{
-                  width: 12,
-                  height: 12,
-                  backgroundColor: "black",
-                  borderRadius: 3,
-                  marginRight: 8,
-                }}
-              ></div>
+              <div className="habit-colors">
+                {d !== "" &&
+                  getColorsForDay(new Date(year, selectedMonthIndex, d)).map(
+                    (c, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          width: 10,
+                          height: 10,
+                          backgroundColor: c,
+                          borderRadius: 3,
+                        }}
+                      />
+                    ),
+                  )}
+              </div>
             </div>
           </article>
         ))}
