@@ -52,6 +52,7 @@ function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits }) {
       setBadHabits((prev) => [...prev, habObj]);
     }
     await saveHabit();
+    setNewHabit("");
   };
 
   const updateHabit = async (name, typeofhabit, color) => {
@@ -94,7 +95,10 @@ function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits }) {
             src={smiley === "good" ? good : bad}
             onClick={toggleSmiley}
           />
-          <input onChange={(e) => setNewHabit(e.target.value)} />
+          <input
+            value={newHabit}
+            onChange={(e) => setNewHabit(e.target.value)}
+          />
           <button onClick={addNewHabit}>+ add</button>
         </div>
       </section>

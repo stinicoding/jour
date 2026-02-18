@@ -78,6 +78,17 @@ function Month({ habits }) {
     }
   };
 
+  const getHabitsForDay = async (date) => {
+    try {
+      const response = await axios.get(
+        `${URL}/habitlog/gethabitsofday/${date}`,
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getColorsForDay = (dateObj) => {
     const key = toDayString(
       dateObj.getFullYear(),
@@ -138,7 +149,9 @@ function Month({ habits }) {
               d !== ""
                 ? () => {
                     setOpen(true);
-                    setSelectedDay(toDayString(year, selectedMonthIndex, d));
+                    const dateString = toDayString(year, selectedMonthIndex, d);
+                    setSelectedDay(dateString);
+                    getHabitsForDay(dateString);
                   }
                 : undefined
             }
