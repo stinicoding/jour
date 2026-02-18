@@ -11,26 +11,31 @@ function Month({ habits }) {
   const [selectedMonthName, setSelectedMonthName] = useState(
     new Date().toLocaleString("en-US", { month: "long" }),
   );
-  const [selectedDay, setSelectedDay] = useState(new Date());
+  const [selectedDay, setSelectedDay] = useState("");
   const [daysOfMonth, setDaysOfMonth] = useState([]);
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState({}); // {1: true, 2: false, 3: true}
   const [trackedOfMonth, setTrackedOfMonth] = useState([]);
   const [habitsPerDay, setHabitsPerDay] = useState({});
 
+  //console.log(selectedDay);
   //console.log(selectedMonthIndex);
   //console.log(selectedDay);
   //console.log(checked);
-  console.log(habits); //array containing objects
-  console.log(trackedOfMonth);
-  console.log(habitsPerDay); //object containing arrays
+  //console.log(habits); //array containing objects
+  //console.log(trackedOfMonth);
+  //console.log(habitsPerDay); //object containing arrays
+
+  //change date object into string
+  const toDayString = (y, m, d) =>
+    `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
 
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth(); //index for month
   const days = new Date(year, month + 1, 0).getDate();
-  const first_day = new Date(year, month, 1);
-  const last_day = new Date(year, month, days);
+  const first_day = toDayString(year, month, 1);
+  const last_day = toDayString(year, month, days);
   //console.log(first_day)
   //console.log(last_day)
 
@@ -74,7 +79,12 @@ function Month({ habits }) {
   };
 
   const getColorsForDay = (dateObj) => {
-    const key = dateObj.toISOString().slice(0, 10); // "2026-02-14"
+    const key = toDayString(
+      dateObj.getFullYear(),
+      dateObj.getMonth(),
+      dateObj.getDate(),
+    );
+    // "2026-02-14"
     const ids = habitsPerDay[key] || [];
     return ids
       .map((id) => habits.find((h) => h._id === id))
@@ -85,7 +95,7 @@ function Month({ habits }) {
   useEffect(() => {
     const map = {};
     for (const log of trackedOfMonth) {
-      const day = new Date(log.date).toISOString().slice(0, 10); // "2026-02-13"
+      const day = log.date; // "2026-02-13"
       if (!map[day]) {
         map[day] = [];
       }
@@ -96,7 +106,8 @@ function Month({ habits }) {
 
   useEffect(() => {
     //finding out the weekday of first of selected month - sunday 0 to saturday 6
-    let first_weekday = first_day.getDay();
+    const firstDate = new Date(first_day + "T12:00:00"); // 12:00 (no UTC rollover)
+    let first_weekday = firstDate.getDay();
     if (first_weekday === 0) {
       first_weekday = 7;
     }
@@ -127,7 +138,7 @@ function Month({ habits }) {
               d !== ""
                 ? () => {
                     setOpen(true);
-                    setSelectedDay(new Date(year, selectedMonthIndex, d));
+                    setSelectedDay(toDayString(year, selectedMonthIndex, d));
                   }
                 : undefined
             }

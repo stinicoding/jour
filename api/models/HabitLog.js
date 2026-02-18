@@ -8,7 +8,7 @@ const habitLogSchema = new schema({
   },
   */
   date: {
-    type: Date,
+    type: String,
     required: true,
   },
   habit_id: {
