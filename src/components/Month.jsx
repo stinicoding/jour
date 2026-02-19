@@ -14,17 +14,17 @@ function Month({ habits }) {
   const [selectedDay, setSelectedDay] = useState("");
   const [daysOfMonth, setDaysOfMonth] = useState([]);
   const [open, setOpen] = useState(false);
-  const [checked, setChecked] = useState({}); // {1: true, 2: false, 3: true}
+  const [checked, setChecked] = useState({});
   const [trackedOfMonth, setTrackedOfMonth] = useState([]);
   const [habitsPerDay, setHabitsPerDay] = useState({});
 
   //console.log(selectedDay);
   //console.log(selectedMonthIndex);
   //console.log(selectedDay);
-  //console.log(checked);
-  //console.log(habits); //array containing objects
+  //console.log(checked); // {1: true, 2: false, 3: true}
+  //console.log(habits); //array containing objects [{habit}, {habit}]
   //console.log(trackedOfMonth);
-  //console.log(habitsPerDay); //object containing arrays
+  //console.log(habitsPerDay); //object containing arrays { date: [habit, habit]}
 
   //change date object into string
   const toDayString = (y, m, d) =>
@@ -39,6 +39,15 @@ function Month({ habits }) {
   //console.log(first_day)
   //console.log(last_day)
 
+  const cleanLog = async () => {
+    try {
+      const del = await axios.delete(`${URL}/habitlog/cleanlog/${selectedDay}`);
+      console.log(del);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const trackHabits = async () => {
     const checkedHabits = Object.keys(checked)
       .filter((id) => checked[id] === true)
@@ -49,6 +58,7 @@ function Month({ habits }) {
       arr_habits.push(habits[checkedHabits[i]]);
     }
     try {
+      await cleanLog();
       for (let i = 0; i < arr_habits.length; i++) {
         //console.log(selectedDay, arr_habits[i]._id, arr_habits[i].name)
         await axios.post(`${URL}/habitlog/newlog`, {
@@ -83,7 +93,26 @@ function Month({ habits }) {
       const response = await axios.get(
         `${URL}/habitlog/gethabitsofday/${date}`,
       );
-      console.log(response.data);
+      const habit_arr = response.data.data;
+      const newChecked = {};
+      console.log(habit_arr);
+      /*
+      for (let i = 0; i < habits.length; i++) {
+        for (let j = 0; j < habit_arr.length; j++) {
+          if (habit_arr[j].habit_id === habits[i]._id) {
+            newChecked[i] = true;
+            break
+          }
+        }
+      }
+      */
+      habits.forEach((hab, i) => {
+        const found = habit_arr.find((h) => h.habit_id === hab._id);
+        if (found) {
+          newChecked[i] = true;
+        }
+      });
+      setChecked(newChecked);
     } catch (error) {
       console.log(error);
     }
