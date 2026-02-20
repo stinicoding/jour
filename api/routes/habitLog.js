@@ -27,7 +27,7 @@ router.delete("/cleanlog/:date", async (req, res) => {
   const { date } = req.params;
   try {
     const hablog_del = await HabitLog.deleteMany({ date: date });
-    console.log(hablog_del);
+    //console.log(hablog_del);
     res.send({ ok: true, data: hablog_del });
   } catch (error) {
     res.send({ ok: false, message: error });

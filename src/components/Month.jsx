@@ -42,7 +42,7 @@ function Month({ habits }) {
   const cleanLog = async () => {
     try {
       const del = await axios.delete(`${URL}/habitlog/cleanlog/${selectedDay}`);
-      console.log(del);
+      //console.log(del);
     } catch (error) {
       console.log(error);
     }
@@ -95,7 +95,7 @@ function Month({ habits }) {
       );
       const habit_arr = response.data.data;
       const newChecked = {};
-      console.log(habit_arr);
+      //console.log(habit_arr);
       /*
       for (let i = 0; i < habits.length; i++) {
         for (let j = 0; j < habit_arr.length; j++) {

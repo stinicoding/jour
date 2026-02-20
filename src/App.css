@@ -24,7 +24,8 @@ input,
 p,
 ul,
 li,
-h3 {
+h3,
+label {
     font-family: 'Courier New', Courier, monospace;
     font-size: 16px;
     color: #353535;
@@ -37,6 +38,14 @@ h3 {
 
 .flex {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.flex_column {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 10px;
@@ -79,6 +88,31 @@ h3 {
 .header {
     background-color: #719daa;
     padding: 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+}
+
+.login-buttons {
+    position: absolute;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.login-button {
+    color: #719daa;
+    background-color: white;
+    border: none;
+    border-radius: 3px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 24;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 2px;
 }
 
 .header h1 {
@@ -87,6 +121,8 @@ h3 {
     font-family: 'Courier New', Courier, monospace;
     font-size: 28px;
     color: white;
+    margin: 0;
+    text-align: center;
 }
 
 .header h2 {
@@ -95,6 +131,12 @@ h3 {
     font-family: 'Courier New', Courier, monospace;
     font-size: 14px;
     color: white;
+    margin: 0;
+    text-align: center;
+}
+
+.app-name {
+    text-decoration: none;
 }
 
 .startpage {
