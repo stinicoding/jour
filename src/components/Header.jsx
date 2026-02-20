@@ -1,15 +1,34 @@
 import { NavLink } from "react-router-dom";
 
-function Header() {
-
+function Header({ isLoggedIn, setIsLoggedIn, owner }) {
   return (
     <div className="header">
-      <div className="login-buttons">
-        <NavLink className="login-button" to="/login">Login</NavLink>
-        <NavLink className="login-button" to="/register">Register</NavLink>
+      <div>
+        {isLoggedIn ? (
+          <div className="login-welcome">
+            <p className="welcome">Welcome, {owner}!</p>
+            <button
+              className="login-button"
+              onClick={() => setIsLoggedIn(false)}
+            >
+              Logout
+            </button>
+          </div>
+        ) : (
+          <div className="login-buttons">
+            <NavLink className="login-button" to="/login">
+              Login
+            </NavLink>
+            <NavLink className="login-button" to="/register">
+              Register
+            </NavLink>
+          </div>
+        )}
       </div>
       <div>
-        <NavLink className="app-name" to="/"><h1>jour.</h1></NavLink>
+        <NavLink className="app-name" to="/">
+          <h1>jour.</h1>
+        </NavLink>
         <h2>every day counts</h2>
       </div>
     </div>
