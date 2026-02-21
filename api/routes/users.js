@@ -5,7 +5,7 @@ const validator = require("validator"); //npm i validator (backend)
 const jwt_secret = process.env.JWT_SECRET;
 const jwt = require("jsonwebtoken");
 
-console.log("JWT SECRET:", jwt_secret);
+//console.log("JWT SECRET:", jwt_secret);
 
 router.post("/register", async (req, res) => {
   const { email, password, passwordConfirmation } = req.body;
@@ -25,7 +25,7 @@ router.post("/register", async (req, res) => {
       email: email.toLowerCase(),
       password: hash,
     };
-    console.log(newUser)
+    console.log(newUser);
     await Users.create(newUser);
     res.send({ ok: true, message: "Successfully registered" });
   } catch (error) {

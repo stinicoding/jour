@@ -1,16 +1,20 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function Header({ isLoggedIn, setIsLoggedIn, owner }) {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
+
   return (
     <div className="header">
       <div>
         {isLoggedIn ? (
           <div className="login-welcome">
             <p className="welcome">Welcome, {owner}!</p>
-            <button
-              className="login-button"
-              onClick={() => setIsLoggedIn(false)}
-            >
+            <button className="login-button" onClick={() => handleLogout()}>
               Logout
             </button>
           </div>

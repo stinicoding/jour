@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import URL from "./config.js"
+import URL from "./config.js";
 import axios from "axios";
 import * as jose from "jose";
 import { useEffect } from "react";
@@ -37,7 +37,7 @@ function App() {
       }
     };
     verify_token();
-  }, [token]);
+  }, [token, isLoggedIn]);
 
   const login = (token) => {
     let decodedToken = jose.decodeJwt(token);
@@ -68,8 +68,9 @@ function App() {
                   setGoodHabits={setGoodHabits}
                   badHabits={badHabits}
                   setBadHabits={setBadHabits}
+                  owner={user?.email}
                 />
-                <Month habits={habits} />
+                <Month habits={habits} owner={user?.email} />
               </div>
             }
           />

@@ -2,11 +2,10 @@ const mongoose = require("mongoose");
 const schema = mongoose.Schema;
 
 const habitLogSchema = new schema({
-  /*user: {
+  user: {
     type: String,
     required: true,
   },
-  */
   date: {
     type: String,
     required: true,

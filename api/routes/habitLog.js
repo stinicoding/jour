@@ -1,12 +1,13 @@
 const router = require("express").Router();
 const HabitLog = require("../models/HabitLog.js");
 
-router.get("/gettracked/:first_day/:last_day", async (req, res) => {
-  const { first_day, last_day } = req.params;
+router.get("/gettracked/:first_day/:last_day/:owner", async (req, res) => {
+  const { first_day, last_day, owner } = req.params;
   //console.log(first_day, last_day, typeof first_day, typeof last_day);
   try {
     const hab = await HabitLog.find({
       date: { $gte: first_day, $lte: last_day }, //$gte (>=), $lte (<=)
+      user: owner,
     });
     res.send({ ok: true, data: hab });
   } catch (error) {
@@ -14,19 +15,20 @@ router.get("/gettracked/:first_day/:last_day", async (req, res) => {
   }
 });
 
-router.get("/gethabitsofday/:date", async (req, res) => {
+router.get("/gethabitsofday/:date/:owner", async (req, res) => {
+  const { date, owner } = req.params;
   try {
-    const hab = await HabitLog.find({ date: req.params.date });
+    const hab = await HabitLog.find({ date: date, user: owner });
     res.send({ ok: true, data: hab });
   } catch (error) {
     res.send({ ok: false, message: error });
   }
 });
 
-router.delete("/cleanlog/:date", async (req, res) => {
-  const { date } = req.params;
+router.delete("/cleanlog/:date/:owner", async (req, res) => {
+  const { date, owner } = req.params;
   try {
-    const hablog_del = await HabitLog.deleteMany({ date: date });
+    const hablog_del = await HabitLog.deleteMany({ date: date, user: owner });
     //console.log(hablog_del);
     res.send({ ok: true, data: hablog_del });
   } catch (error) {
@@ -35,9 +37,10 @@ router.delete("/cleanlog/:date", async (req, res) => {
 });
 
 router.post("/newlog", async (req, res) => {
-  const { date, habit_id, habit_name } = req.body;
+  const { date, habit_id, habit_name, owner } = req.body;
   try {
     const newlog = {
+      user: owner,
       date: date,
       habit_id: habit_id,
       habit_name: habit_name,

@@ -5,7 +5,7 @@ import bad from "../pictures/smiley_bad.jpg";
 import axios from "axios";
 import URL from "../config.js";
 
-function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits }) {
+function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits, owner }) {
   const [newHabit, setNewHabit] = useState("");
   const [smiley, setSmiley] = useState("good");
   const [today, setToday] = useState(new Date().toLocaleDateString("en-US"));
@@ -16,7 +16,7 @@ function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits }) {
 
   const getHabits = async () => {
     try {
-      const res = await axios.get(`${URL}/habits`);
+      const res = await axios.get(`${URL}/habits/${owner}`);
       //console.log(res.data.good);
       setGoodHabits(res.data.good);
       setBadHabits(res.data.bad);
@@ -35,6 +35,7 @@ function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits }) {
         name: newHabit,
         typeofhabit: smiley,
         color: "#ffffff",
+        owner: owner,
       });
     } catch (error) {
       console.log(error);
@@ -62,6 +63,7 @@ function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits }) {
         name: name,
         typeofhabit: typeofhabit,
         color: color,
+        owner: owner,
       });
       getHabits();
     } catch (error) {
@@ -71,7 +73,7 @@ function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits }) {
 
   const deleteHabit = async (hab) => {
     try {
-      await axios.delete(`${URL}/habits/deletehabit/${hab}`);
+      await axios.delete(`${URL}/habits/deletehabit/${hab}/${owner}`);
       getHabits();
     } catch (error) {
       console.log(error);

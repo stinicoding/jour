@@ -4,7 +4,7 @@ import URL from "../config.js";
 import Week from "../components/Week";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 
-function Month({ habits }) {
+function Month({ habits, owner }) {
   const [selectedMonthIndex, setSelectedMonthIndex] = useState(
     new Date().getMonth(),
   );
@@ -41,7 +41,9 @@ function Month({ habits }) {
 
   const cleanLog = async () => {
     try {
-      const del = await axios.delete(`${URL}/habitlog/cleanlog/${selectedDay}`);
+      const del = await axios.delete(
+        `${URL}/habitlog/cleanlog/${selectedDay}/${owner}`,
+      );
       //console.log(del);
     } catch (error) {
       console.log(error);
@@ -62,6 +64,7 @@ function Month({ habits }) {
       for (let i = 0; i < arr_habits.length; i++) {
         //console.log(selectedDay, arr_habits[i]._id, arr_habits[i].name)
         await axios.post(`${URL}/habitlog/newlog`, {
+          owner: owner,
           date: selectedDay,
           habit_id: arr_habits[i]._id,
           habit_name: arr_habits[i].name,
@@ -79,7 +82,7 @@ function Month({ habits }) {
   const getTrackedHabits = async () => {
     try {
       const response = await axios.get(
-        `${URL}/habitlog/gettracked/${first_day}/${last_day}`,
+        `${URL}/habitlog/gettracked/${first_day}/${last_day}/${owner}`,
       );
       //console.log(response.data.data)
       setTrackedOfMonth(response.data.data);
@@ -91,7 +94,7 @@ function Month({ habits }) {
   const getHabitsForDay = async (date) => {
     try {
       const response = await axios.get(
-        `${URL}/habitlog/gethabitsofday/${date}`,
+        `${URL}/habitlog/gethabitsofday/${date}/${owner}`,
       );
       const habit_arr = response.data.data;
       const newChecked = {};
