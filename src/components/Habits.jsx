@@ -8,7 +8,6 @@ import URL from "../config.js";
 function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits, owner }) {
   const [newHabit, setNewHabit] = useState("");
   const [smiley, setSmiley] = useState("good");
-  const [today, setToday] = useState(new Date().toLocaleDateString("en-US"));
 
   //console.log(newHabit);
   //console.log(goodHabits);
@@ -86,9 +85,6 @@ function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits, owner }) {
 
   return (
     <div>
-      <section className="center">
-        <p>Today: {today}</p>
-      </section>
       <section>
         <h3 className="center">add new {smiley} habit</h3>
         <div className="flex">

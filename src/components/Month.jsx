@@ -3,23 +3,31 @@ import axios from "axios";
 import URL from "../config.js";
 import Week from "../components/Week";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import IconButton from "@mui/material/IconButton";
 
 function Month({ habits, owner }) {
-  const [selectedMonthIndex, setSelectedMonthIndex] = useState(
-    new Date().getMonth(),
-  );
-  const [selectedMonthName, setSelectedMonthName] = useState(
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [monthIndex, setMonthIndex] = useState(new Date().getMonth());
+  const [monthName, setMonthName] = useState(
     new Date().toLocaleString("en-US", { month: "long" }),
   );
-  const [selectedDay, setSelectedDay] = useState("");
+  const [days, setDays] = useState(
+    new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate(), //day 0 is last day of last month --> +1 on month
+  );
   const [daysOfMonth, setDaysOfMonth] = useState([]);
+  const [selectedDay, setSelectedDay] = useState("");
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState({});
   const [trackedOfMonth, setTrackedOfMonth] = useState([]);
   const [habitsPerDay, setHabitsPerDay] = useState({});
 
-  //console.log(selectedDay);
-  //console.log(selectedMonthIndex);
+  //console.log(year);
+  //console.log(monthIndex);
+  //console.log(monthName);
+  //console.log(days);
+  //console.log(daysOfMonth);
   //console.log(selectedDay);
   //console.log(checked); // {1: true, 2: false, 3: true}
   //console.log(habits); //array containing objects [{habit}, {habit}]
@@ -30,14 +38,48 @@ function Month({ habits, owner }) {
   const toDayString = (y, m, d) =>
     `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
 
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth(); //index for month
-  const days = new Date(year, month + 1, 0).getDate();
-  const first_day = toDayString(year, month, 1);
-  const last_day = toDayString(year, month, days);
-  //console.log(first_day)
-  //console.log(last_day)
+  const first_day = toDayString(year, monthIndex, 1);
+  const last_day = toDayString(year, monthIndex, days);
+  //console.log(first_day);
+  //console.log(last_day);
+
+  const handleBack = () => {
+    const currentIndex = monthIndex;
+    const currentYear = year;
+    let newIndex = 0;
+    let newYear = currentYear;
+    if (currentIndex === 0) {
+      newIndex = 12;
+      newYear = currentYear - 1;
+    } else {
+      newIndex = currentIndex - 1;
+    }
+    setMonthIndex(newIndex);
+    setMonthName(
+      new Date(newYear, newIndex).toLocaleString("en-US", { month: "long" }),
+    );
+    setYear(newYear);
+    setDays(new Date(newYear, newIndex + 1, 0).getDate());
+  };
+
+  const handleForward = () => {
+    const currentIndex = monthIndex;
+    const currentYear = year;
+    let newIndex = 0;
+    let newYear = currentYear;
+    if (currentIndex === 12) {
+      newIndex = 0;
+      newYear = currentYear + 1;
+    } else {
+      newIndex = currentIndex + 1;
+    }
+    setMonthIndex(newIndex);
+    setMonthName(
+      new Date(newYear, newIndex).toLocaleString("en-US", { month: "long" }),
+    );
+    setYear(newYear);
+    setDays(new Date(newYear, newIndex + 1, 0).getDate());
+  };
 
   const cleanLog = async () => {
     try {
@@ -165,61 +207,97 @@ function Month({ habits, owner }) {
       arr_days.push(i);
     }
     setDaysOfMonth(arr_days);
+    //getTrackedHabits();
+  }, [monthIndex, year]);
+
+  useEffect(() => {
     getTrackedHabits();
   }, []);
 
   return (
     <div>
-      <h1>{selectedMonthName}</h1>
+      <h1>
+        {monthName} {year}
+      </h1>
       <Week />
-      <section className="calendar-month">
-        {daysOfMonth.map((d, i) => (
-          <article
-            key={i}
-            className={d === "" ? "calendar-blank" : "calendar-day"}
-            onClick={
-              d !== ""
-                ? () => {
-                    setOpen(true);
-                    const dateString = toDayString(year, selectedMonthIndex, d);
-                    setSelectedDay(dateString);
-                    getHabitsForDay(dateString);
-                  }
-                : undefined
-            }
-          >
-            <div>
-              <p className="calendar-today">
-                <span
-                  className={
-                    d === new Date().getDate() ? "calendar-today-inner" : ""
-                  }
-                >
-                  {d}
-                </span>
-              </p>
-            </div>
-            <div>
-              <div className="habit-colors">
-                {d !== "" &&
-                  getColorsForDay(new Date(year, selectedMonthIndex, d)).map(
-                    (c, idx) => (
-                      <div
-                        key={idx}
-                        style={{
-                          width: 10,
-                          height: 10,
-                          backgroundColor: c,
-                          borderRadius: 3,
-                        }}
-                      />
-                    ),
-                  )}
+      <div className="calendar-flex">
+        <IconButton
+          onClick={() => handleBack()}
+          sx={{
+            backgroundColor: "#719daa",
+            color: "white",
+            borderRadius: "50%",
+            width: 30,
+            height: 30,
+          }}
+        >
+          <ArrowBackIosIcon sx={{ fontSize: 18 }} />
+        </IconButton>
+        <section className="calendar-month">
+          {daysOfMonth.map((d, i) => (
+            <article
+              key={i}
+              className={d === "" ? "calendar-blank" : "calendar-day"}
+              onClick={
+                d !== ""
+                  ? () => {
+                      setOpen(true);
+                      const dateString = toDayString(year, monthIndex, d);
+                      setSelectedDay(dateString);
+                      getHabitsForDay(dateString);
+                    }
+                  : undefined
+              }
+            >
+              <div>
+                <p className="calendar-today">
+                  <span
+                    className={
+                      d === new Date().getDate() &&
+                      monthIndex === new Date().getMonth() &&
+                      year === new Date().getFullYear()
+                        ? "calendar-today-inner"
+                        : ""
+                    }
+                  >
+                    {d}
+                  </span>
+                </p>
               </div>
-            </div>
-          </article>
-        ))}
-      </section>
+              <div>
+                <div className="habit-colors">
+                  {d !== "" &&
+                    getColorsForDay(new Date(year, monthIndex, d)).map(
+                      (c, idx) => (
+                        <div
+                          key={idx}
+                          style={{
+                            width: 10,
+                            height: 10,
+                            backgroundColor: c,
+                            borderRadius: 3,
+                          }}
+                        />
+                      ),
+                    )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </section>
+        <IconButton
+          onClick={() => handleForward()}
+          sx={{
+            backgroundColor: "#719daa",
+            color: "white",
+            borderRadius: "50%",
+            width: 30,
+            height: 30,
+          }}
+        >
+          <ArrowForwardIosIcon sx={{ fontSize: 18 }} />
+        </IconButton>
+      </div>
       {open && (
         <Dialog open={open} onClose={() => setOpen(false)}>
           <section className="dialog-caption-flex">

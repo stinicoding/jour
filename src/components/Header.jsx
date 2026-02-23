@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 function Header({ isLoggedIn, setIsLoggedIn, owner }) {
+  const [today, setToday] = useState(new Date().toLocaleDateString("en-US"));
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -10,7 +12,16 @@ function Header({ isLoggedIn, setIsLoggedIn, owner }) {
 
   return (
     <div className="header">
-      <div>
+      <section>
+        <p className="header-today">{today}</p>
+      </section>
+      <section>
+        <NavLink className="app-name" to="/">
+          <h1>jour.</h1>
+        </NavLink>
+        <h2>every day counts</h2>
+      </section>
+      <section>
         {isLoggedIn ? (
           <div className="login-welcome">
             <p className="welcome">Welcome, {owner}!</p>
@@ -28,13 +39,7 @@ function Header({ isLoggedIn, setIsLoggedIn, owner }) {
             </NavLink>
           </div>
         )}
-      </div>
-      <div>
-        <NavLink className="app-name" to="/">
-          <h1>jour.</h1>
-        </NavLink>
-        <h2>every day counts</h2>
-      </div>
+      </section>
     </div>
   );
 }
