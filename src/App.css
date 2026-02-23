@@ -25,7 +25,8 @@ p,
 ul,
 li,
 h3,
-label {
+label,
+address {
     font-family: 'Courier New', Courier, monospace;
     font-size: 16px;
     color: #353535;
@@ -274,4 +275,19 @@ h3 {
 .habit-colors {
     display: flex;
     gap: 3px;
+}
+
+.footer {
+    background-color: #719daa;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0px 20px 0px;
+}
+
+.footer p,
+address {
+    font-size: 16px;
+    color: white;
 }

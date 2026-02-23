@@ -10,6 +10,7 @@ import Habits from "./components/Habits";
 import Month from "./components/Month";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Footer from "./components/Footer";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -75,6 +76,7 @@ function App() {
             }
           />
         </Routes>
+        <Footer />
       </Router>
     </>
   );
