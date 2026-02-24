@@ -7,6 +7,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import IconButton from "@mui/material/IconButton";
 import SmsIcon from "@mui/icons-material/Sms";
+import Tooltip from "@mui/material/Tooltip";
 
 function Month({ habits, owner }) {
   const [year, setYear] = useState(new Date().getFullYear());
@@ -35,7 +36,7 @@ function Month({ habits, owner }) {
   //console.log(habits); //array containing objects [{habit}, {habit}]
   //console.log(trackedOfMonth);
   //console.log(habitsPerDay); //object containing arrays { date: [habit, habit]}
-  console.log(postsOfMonth);
+  //console.log(postsOfMonth);
 
   //change date object into string
   const toDayString = (y, m, d) =>
@@ -180,14 +181,6 @@ function Month({ habits, owner }) {
       .map((h) => h.color);
   };
 
-  const getPost = async () => {
-    try {
-      const response = await axios.get(`${URL}/journal/getpost/${selectedDay}`);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const getPostsOfMonth = async () => {
     try {
       const response = await axios.get(
@@ -289,14 +282,23 @@ function Month({ habits, owner }) {
                 </p>
               </div>
               <div>
-                {postsOfMonth?.some(
-                  //some instead of filter --> filter returns [] and this is always truthy
-                  (ele) => ele.date === toDayString(year, monthIndex, d),
-                ) && (
-                  <SmsIcon
-                    sx={{ height: "18px", width: "18px", color: "#719daa" }}
-                  />
-                )}
+                {(() => {
+                  const postForDay = postsOfMonth?.find(
+                    (ele) => ele.date === toDayString(year, monthIndex, d),
+                  );
+                  return postForDay ? (
+                    <Tooltip title={postForDay.text} arrow>
+                      <SmsIcon
+                        sx={{
+                          height: "18px",
+                          width: "18px",
+                          color: "#719daa",
+                          cursor: "pointer",
+                        }}
+                      />
+                    </Tooltip>
+                  ) : null;
+                })()}
               </div>
               <div>
                 <div className="habit-colors">
