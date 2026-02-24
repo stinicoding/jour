@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import IconButton from "@mui/material/IconButton";
+import SmsIcon from "@mui/icons-material/Sms";
 
 function Month({ habits, owner }) {
   const [year, setYear] = useState(new Date().getFullYear());
@@ -22,6 +23,7 @@ function Month({ habits, owner }) {
   const [checked, setChecked] = useState({});
   const [trackedOfMonth, setTrackedOfMonth] = useState([]);
   const [habitsPerDay, setHabitsPerDay] = useState({});
+  const [postsOfMonth, setPostsOfMonth] = useState([]);
 
   //console.log(year);
   //console.log(monthIndex);
@@ -33,6 +35,7 @@ function Month({ habits, owner }) {
   //console.log(habits); //array containing objects [{habit}, {habit}]
   //console.log(trackedOfMonth);
   //console.log(habitsPerDay); //object containing arrays { date: [habit, habit]}
+  console.log(postsOfMonth);
 
   //change date object into string
   const toDayString = (y, m, d) =>
@@ -177,6 +180,26 @@ function Month({ habits, owner }) {
       .map((h) => h.color);
   };
 
+  const getPost = async () => {
+    try {
+      const response = await axios.get(`${URL}/journal/getpost/${selectedDay}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getPostsOfMonth = async () => {
+    try {
+      const response = await axios.get(
+        `${URL}/journal/getposts/${first_day}/${last_day}/${owner}`,
+      );
+      //console.log(response.data.data)
+      setPostsOfMonth(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     const map = {};
     for (const log of trackedOfMonth) {
@@ -212,6 +235,7 @@ function Month({ habits, owner }) {
 
   useEffect(() => {
     getTrackedHabits();
+    getPostsOfMonth();
   }, []);
 
   return (
@@ -263,6 +287,16 @@ function Month({ habits, owner }) {
                     {d}
                   </span>
                 </p>
+              </div>
+              <div>
+                {postsOfMonth?.some(
+                  //some instead of filter --> filter returns [] and this is always truthy
+                  (ele) => ele.date === toDayString(year, monthIndex, d),
+                ) && (
+                  <SmsIcon
+                    sx={{ height: "18px", width: "18px", color: "#719daa" }}
+                  />
+                )}
               </div>
               <div>
                 <div className="habit-colors">

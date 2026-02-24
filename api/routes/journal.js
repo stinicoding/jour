@@ -17,4 +17,18 @@ router.post("/newpost", async (req, res) => {
   }
 });
 
+router.get("/getposts/:first_day/:last_day/:owner", async (req, res) => {
+  const { first_day, last_day, owner } = req.params;
+  //console.log(first_day, last_day, typeof first_day, typeof last_day);
+  try {
+    const jour = await Journal.find({
+      date: { $gte: first_day, $lte: last_day }, //$gte (>=), $lte (<=)
+      user: owner,
+    });
+    res.send({ ok: true, data: jour });
+  } catch (error) {
+    res.send({ ok: false, message: error });
+  }
+});
+
 module.exports = router;
