@@ -154,6 +154,25 @@ h3 {
     align-items: center;
 }
 
+.startpage-journal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.journal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.journal textarea {
+    width: 80%;
+    height: 120px;
+}
+
 .week {
     display: flex;
     justify-content: center;

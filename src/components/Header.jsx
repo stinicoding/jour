@@ -1,8 +1,6 @@
-import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-function Header({ isLoggedIn, setIsLoggedIn, owner }) {
-  const [today, setToday] = useState(new Date().toLocaleDateString("en-US"));
+function Header({ isLoggedIn, setIsLoggedIn, owner, today }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
