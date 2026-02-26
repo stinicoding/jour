@@ -31,4 +31,15 @@ router.get("/getposts/:first_day/:last_day/:owner", async (req, res) => {
   }
 });
 
+router.patch("/updatepost/:id", async (req, res) => {
+  const { id } = req.params;
+  const { text } = req.body;
+  try {
+    const jour = await Journal.findByIdAndUpdate(id, { text }, { new: true });
+    res.send({ ok: true, data: jour });
+  } catch (error) {
+    res.send({ ok: false, message: error });
+  }
+});
+
 module.exports = router;

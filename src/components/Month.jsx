@@ -25,6 +25,7 @@ function Month({ habits, owner }) {
   const [trackedOfMonth, setTrackedOfMonth] = useState([]);
   const [habitsPerDay, setHabitsPerDay] = useState({});
   const [postsOfMonth, setPostsOfMonth] = useState([]);
+  const [input, setInput] = useState("");
 
   //console.log(year);
   //console.log(monthIndex);
@@ -122,6 +123,41 @@ function Month({ habits, owner }) {
     } catch (error) {
       console.log(error);
     }
+    setOpen(false);
+  };
+
+  const saveJournal = async () => {
+    try {
+      await axios.post(`${URL}/journal/newpost`, {
+        text: input,
+        date: selectedDay,
+        owner: owner,
+      });
+      setInput("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateJournal = async (id) => {
+    try {
+      await axios.patch(`${URL}/journal/updatepost/${id}`, {
+        text: input,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const saveDailyInformation = async () => {
+    await trackHabits();
+    const existingPost = postsOfMonth?.find((ele) => ele.date === selectedDay);
+    if (existingPost) {
+      await updateJournal(existingPost._id);
+    } else {
+      await saveJournal();
+    }
+    await getPostsOfMonth();
     setOpen(false);
   };
 
@@ -258,10 +294,14 @@ function Month({ habits, owner }) {
               onClick={
                 d !== ""
                   ? () => {
-                      setOpen(true);
                       const dateString = toDayString(year, monthIndex, d);
                       setSelectedDay(dateString);
+                      const post = postsOfMonth?.find(
+                        (ele) => ele.date === dateString,
+                      );
+                      setInput(post ? post.text : "");
                       getHabitsForDay(dateString);
+                      setOpen(true);
                     }
                   : undefined
               }
@@ -380,12 +420,16 @@ function Month({ habits, owner }) {
                   return (
                     <textarea
                       className="journal-text"
-                      value={postForDay?.text}
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
                     />
                   );
                 })()}
               </section>
-              <button className="button-save" onClick={() => trackHabits()}>
+              <button
+                className="button-save"
+                onClick={() => saveDailyInformation()}
+              >
                 save
               </button>
             </DialogContent>
