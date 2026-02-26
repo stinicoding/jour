@@ -346,29 +346,45 @@ function Month({ habits, owner }) {
           </section>
           <section>
             <DialogContent>
-              {habits?.map((hab, i) => (
-                <article key={i} className="dialog-habits-flex">
-                  <div className="dialog-habits">
-                    <div
-                      style={{
-                        width: 12,
-                        height: 12,
-                        backgroundColor: hab.color,
-                        borderRadius: 3,
-                        marginRight: 8,
-                      }}
-                    ></div>
-                    <p>{hab.name}</p>
-                  </div>
-                  <input
-                    type="checkbox"
-                    checked={checked[i] || false}
-                    onChange={
-                      (e) => setChecked((prev) => ({ ...prev, [i]: !prev[i] })) //change Checkbox with Index between true and false
-                    }
-                  />
-                </article>
-              ))}
+              <section>
+                {habits?.map((hab, i) => (
+                  <article key={i} className="dialog-habits-flex">
+                    <div className="dialog-habits">
+                      <div
+                        style={{
+                          width: 12,
+                          height: 12,
+                          backgroundColor: hab.color,
+                          borderRadius: 3,
+                          marginRight: 8,
+                        }}
+                      ></div>
+                      <p>{hab.name}</p>
+                    </div>
+                    <input
+                      type="checkbox"
+                      checked={checked[i] || false}
+                      onChange={
+                        (e) =>
+                          setChecked((prev) => ({ ...prev, [i]: !prev[i] })) //change Checkbox with Index between true and false
+                      }
+                    />
+                  </article>
+                ))}
+              </section>
+              <section>
+                {(() => {
+                  const postForDay = postsOfMonth?.find(
+                    (ele) => ele.date === selectedDay,
+                  );
+                  return (
+                    <textarea
+                      className="journal-text"
+                      value={postForDay?.text}
+                    />
+                  );
+                })()}
+              </section>
               <button className="button-save" onClick={() => trackHabits()}>
                 save
               </button>

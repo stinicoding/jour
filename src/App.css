@@ -168,7 +168,7 @@ h3 {
     gap: 10px;
 }
 
-.journal textarea {
+.journal-text {
     width: 80%;
     height: 120px;
 }

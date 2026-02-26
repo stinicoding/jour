@@ -24,7 +24,11 @@ function Journal({ owner, today }) {
   return (
     <div className="journal">
       <h3>how was your day?</h3>
-      <textarea value={input} onChange={(e) => setInput(e.target.value)} />
+      <textarea
+        className="journal-text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+      />
       <button onClick={() => savePost()}>save</button>
     </div>
   );
