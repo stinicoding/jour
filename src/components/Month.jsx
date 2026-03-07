@@ -265,7 +265,7 @@ function Month({ habits, owner }) {
   useEffect(() => {
     getTrackedHabits();
     getPostsOfMonth();
-  }, []);
+  }, [monthIndex]);
 
   return (
     <div>

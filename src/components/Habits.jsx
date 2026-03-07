@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-//import { TextField, Button } from "@mui/material";
+import {
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  DialogActions,
+} from "@mui/material";
 import good from "../pictures/smiley_good.jpg";
 import bad from "../pictures/smiley_bad.jpg";
 import axios from "axios";
@@ -8,10 +14,24 @@ import URL from "../config.js";
 function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits, owner }) {
   const [newHabit, setNewHabit] = useState("");
   const [smiley, setSmiley] = useState("good");
+  const [open, setOpen] = useState(false);
+  const [selectedHabitId, setSelectedHabitId] = useState("");
+  const [selectedHabitName, setSelectedHabitName] = useState("");
 
   //console.log(newHabit);
   //console.log(goodHabits);
   //console.log(badHabits);
+  //console.log(selectedHabit);
+
+  const handleClickOpen = (hab) => {
+    setSelectedHabitId(hab._id);
+    setSelectedHabitName(hab.name);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const getHabits = async () => {
     try {
@@ -42,38 +62,31 @@ function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits, owner }) {
   };
 
   const addNewHabit = async () => {
-    const habObj = {
-      name: newHabit,
-      color: "#ffffff",
-    };
-    if (smiley === "good") {
-      setGoodHabits((prev) => [...prev, habObj]);
-    } else if (smiley === "bad") {
-      setBadHabits((prev) => [...prev, habObj]);
-    }
     await saveHabit();
+    await getHabits();
     setNewHabit("");
   };
 
-  const updateHabit = async (name, typeofhabit, color) => {
+  const updateHabit = async (id, color) => {
     //console.log(typeof color);
     try {
-      await axios.patch(`${URL}/habits/updatehabit`, {
-        name: name,
-        typeofhabit: typeofhabit,
+      await axios.patch(`${URL}/habits/updatehabitcolor`, {
+        id: id,
         color: color,
-        owner: owner,
       });
-      getHabits();
+      await getHabits();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const deleteHabit = async (hab) => {
+  const deleteHabit = async (hab_id) => {
+    //console.log(hab_id);
     try {
-      await axios.delete(`${URL}/habits/deletehabit/${hab}/${owner}`);
-      getHabits();
+      setOpen(false)
+      await axios.delete(`${URL}/habits/deletehabit/${hab_id}`);
+      await axios.delete(`${URL}/habitlog/deletehabitlogs/${hab_id}`);
+      await getHabits();
     } catch (error) {
       console.log(error);
     }
@@ -104,18 +117,16 @@ function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits, owner }) {
         <div>
           <ul className="bold">good habits</ul>
           {goodHabits?.map((hab) => (
-            <li key={hab.name}>
+            <li key={hab._id}>
               <p>{hab.name}</p>
               <div className="habit_adjustments">
                 <input
                   type="color"
                   className="colorpicker"
                   value={hab.color}
-                  onChange={(e) =>
-                    updateHabit(hab.name, "good", e.target.value)
-                  }
+                  onChange={(e) => updateHabit(hab._id, e.target.value)}
                 />
-                <button onClick={() => deleteHabit(hab.name)}>x</button>
+                <button onClick={() => handleClickOpen(hab)}>x</button>
               </div>
             </li>
           ))}
@@ -123,21 +134,42 @@ function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits, owner }) {
         <div>
           <ul className="bold">bad habits</ul>
           {badHabits?.map((hab) => (
-            <li key={hab.name}>
+            <li key={hab._id}>
               <p>{hab.name}</p>
               <div className="habit_adjustments">
                 <input
                   type="color"
                   className="colorpicker"
                   value={hab.color}
-                  onChange={(e) => updateHabit(hab.name, "bad", e.target.value)}
+                  onChange={(e) => updateHabit(hab._id, e.target.value)}
                 />
-                <button onClick={() => deleteHabit(hab.name)}>x</button>
+                <button onClick={() => handleClickOpen(hab)}>x</button>
               </div>
             </li>
           ))}
         </div>
       </section>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        disableRestoreFocus //prevents aria errors
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {`Delete ${selectedHabitName}`}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Do you really want to remove the Habit "{selectedHabitName}" from
+            your list and all the belonging logs to it?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <button onClick={() => deleteHabit(selectedHabitId)}>Yes</button>
+          <button onClick={handleClose}>No</button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

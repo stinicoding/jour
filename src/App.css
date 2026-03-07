@@ -32,6 +32,19 @@ address {
     color: #353535;
 }
 
+#alert-dialog-description {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+    color: #353535;
+}
+
+#alert-dialog-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 18px;
+    font-weight: 600;
+    color: #353535;
+}
+
 .bold,
 h3 {
     font-weight: 600;

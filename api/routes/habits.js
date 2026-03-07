@@ -31,23 +31,22 @@ router.post("/newhabit", async (req, res) => {
   }
 });
 
-router.patch("/updatehabit", async (req, res) => {
-  const { name, typeofhabit, color, owner } = req.body;
+router.patch("/updatehabitcolor", async (req, res) => {
+  const { id, color } = req.body;
   try {
-    const hab = await Habits.findOneAndUpdate(
-      { name: name },
-      { name: name, typeofhabit: typeofhabit, color: color, user: owner },
-    );
+    const hab = await Habits.findByIdAndUpdate(id, {
+      color: color,
+    });
     res.send({ ok: true, data: hab });
   } catch (error) {
     res.send({ ok: false, message: error });
   }
 });
 
-router.delete("/deletehabit/:hab/:owner", async (req, res) => {
-  const { hab, owner } = req.params;
+router.delete("/deletehabit/:id", async (req, res) => {
+  const { id } = req.params;
   try {
-    const delhab = await Habits.findOneAndDelete({ name: hab, user: owner });
+    const delhab = await Habits.findByIdAndDelete(id);
     res.send({ ok: true, data: delhab });
   } catch (error) {
     res.send({ ok: false, message: error });
