@@ -68,7 +68,7 @@ function Register() {
           type="password"
           onChange={(e) => setPasswordConfirmation(e.target.value)}
         />
-        <button className="button-login" onClick={() => validateRegistration()}>
+        <button className="space_m" onClick={() => validateRegistration()}>
           Register
         </button>
       </div>

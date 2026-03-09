@@ -1,11 +1,13 @@
 import { NavLink, useNavigate } from "react-router-dom";
 
-function Header({ isLoggedIn, setIsLoggedIn, owner, today }) {
+function Header({ isLoggedIn, setIsLoggedIn, setToken, owner, today }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    localStorage.clear();
+    setToken(null)
     setIsLoggedIn(false);
-    navigate("/login");
+    navigate("/");
   };
 
   return (

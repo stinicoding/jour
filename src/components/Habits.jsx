@@ -102,7 +102,7 @@ function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits, owner }) {
         <h3 className="center">add new {smiley} habit</h3>
         <div className="flex">
           <img
-            className="smiley clickable"
+            className="habit-smiley clickable"
             src={smiley === "good" ? good : bad}
             onClick={toggleSmiley}
           />

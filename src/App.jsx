@@ -6,6 +6,7 @@ import * as jose from "jose";
 import { useEffect } from "react";
 import "./App.css";
 import Header from "./components/Header";
+import Welcome from "./components/Welcome";
 import Habits from "./components/Habits";
 import Journal from "./components/Journal";
 import Month from "./components/Month";
@@ -27,6 +28,7 @@ function App() {
 
   //console.log(habits);
   //console.log(today);
+  //console.log(isLoggedIn)
 
   useEffect(() => {
     const verify_token = async () => {
@@ -43,13 +45,14 @@ function App() {
       }
     };
     verify_token();
-  }, [token, isLoggedIn]);
+  }, [token]);
 
   const login = (token) => {
     let decodedToken = jose.decodeJwt(token);
     let user = { email: decodedToken.userEmail };
     localStorage.setItem("token", JSON.stringify(token));
     localStorage.setItem("user", JSON.stringify(user));
+    setToken(token)
     setUser(user);
     setIsLoggedIn(true);
   };
@@ -60,6 +63,7 @@ function App() {
         <Header
           isLoggedIn={isLoggedIn}
           setIsLoggedIn={setIsLoggedIn}
+          setToken={setToken}
           owner={user?.email}
           today={today}
         />
@@ -69,19 +73,25 @@ function App() {
           <Route
             path="/"
             element={
-              <div className="startpage">
-                <div className="startpage-journal">
-                  <Habits
-                    goodHabits={goodHabits}
-                    setGoodHabits={setGoodHabits}
-                    badHabits={badHabits}
-                    setBadHabits={setBadHabits}
-                    owner={user?.email}
-                  />
-                  <Journal owner={user?.email} today={today} />
+              isLoggedIn ? (
+                <div className="startpage">
+                  <div className="startpage-journal">
+                    <Habits
+                      goodHabits={goodHabits}
+                      setGoodHabits={setGoodHabits}
+                      badHabits={badHabits}
+                      setBadHabits={setBadHabits}
+                      owner={user?.email}
+                    />
+                    <Journal owner={user?.email} today={today} />
+                  </div>
+                  <Month habits={habits} owner={user?.email} />
                 </div>
-                <Month habits={habits} owner={user?.email} />
-              </div>
+              ) : (
+                <div>
+                  <Welcome />
+                </div>
+              )
             }
           />
         </Routes>

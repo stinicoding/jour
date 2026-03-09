@@ -43,7 +43,7 @@ function Login({ login }) {
         <input type="email" onChange={(e) => setEmail(e.target.value)} />
         <label>Password</label>
         <input type="password" onChange={(e) => setPassword(e.target.value)} />
-        <button className="button-login" onClick={handleSubmit}>
+        <button className="space_l" onClick={handleSubmit}>
           Login
         </button>
       </div>
