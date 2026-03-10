@@ -83,7 +83,7 @@ function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits, owner }) {
   const deleteHabit = async (hab_id) => {
     //console.log(hab_id);
     try {
-      setOpen(false)
+      setOpen(false);
       await axios.delete(`${URL}/habits/deletehabit/${hab_id}`);
       await axios.delete(`${URL}/habitlog/deletehabitlogs/${hab_id}`);
       await getHabits();
@@ -115,7 +115,7 @@ function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits, owner }) {
       </section>
       <section className="habit_list">
         <div>
-          <ul className="bold">good habits</ul>
+          {goodHabits?.length > 0 && <ul className="bold">good habits</ul>}
           {goodHabits?.map((hab) => (
             <li key={hab._id}>
               <p>{hab.name}</p>
@@ -132,7 +132,7 @@ function Habits({ goodHabits, setGoodHabits, badHabits, setBadHabits, owner }) {
           ))}
         </div>
         <div>
-          <ul className="bold">bad habits</ul>
+          {badHabits?.length > 0 && <ul className="bold">bad habits</ul>}
           {badHabits?.map((hab) => (
             <li key={hab._id}>
               <p>{hab.name}</p>
