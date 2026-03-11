@@ -64,6 +64,7 @@ function App() {
           isLoggedIn={isLoggedIn}
           setIsLoggedIn={setIsLoggedIn}
           setToken={setToken}
+          setUser={setUser}
           owner={user?.email}
           today={today}
         />

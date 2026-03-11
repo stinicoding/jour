@@ -9,8 +9,18 @@ const jwt = require("jsonwebtoken");
 
 router.post("/register", async (req, res) => {
   const { email, password, passwordConfirmation } = req.body;
+  const existing = await Users.findOne({ email: email.toLowerCase() });
+  if (existing) {
+    return res.send({ ok: false, message: "Email already registered" });
+  }
   if (!email || !password || !passwordConfirmation) {
     return res.send({ ok: false, message: "All fields required" });
+  }
+  if (password.length < 8) {
+    return res.send({
+      ok: false,
+      message: "Password must have at least 8 characters.",
+    });
   }
   if (password !== passwordConfirmation) {
     return res.json({ ok: false, message: "Passwords must match" });

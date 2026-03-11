@@ -22,15 +22,17 @@ function Register() {
       });
       //console.log(response);
       if (response.data.ok) {
-        return true;
+        navigate("/login")
       } else {
-        return false;
+        setMessage(response.data.message)
       }
     } catch (error) {
       console.log(error);
+      setMessage("Server error")
     }
   };
 
+  /*
   const validateRegistration = async () => {
     let email_split1 = email.split("@");
     let email_split2 = email.split(".");
@@ -50,6 +52,7 @@ function Register() {
       }
     }
   };
+  */
 
   useEffect(() => {
     setShown(true);
@@ -68,7 +71,7 @@ function Register() {
           type="password"
           onChange={(e) => setPasswordConfirmation(e.target.value)}
         />
-        <button className="space_m" onClick={() => validateRegistration()}>
+        <button className="space_m" onClick={() => register()}>
           Register
         </button>
       </div>
