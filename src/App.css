@@ -278,8 +278,6 @@ h3 {
 }
 
 .calendar-today {
-    width: 20px;
-    height: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -349,6 +347,11 @@ h3 {
     gap: 3px;
 }
 
+.habit-color {
+    height: 10px;
+    width: 10px;
+}
+
 .footer {
     background-color: #719daa;
     display: flex;
@@ -368,24 +371,45 @@ address {
     .card {
         width: 60%;
     }
+
     .habit_list {
-        flex-direction: column;
-        align-items: center;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: top;
         gap: 20px;
     }
+
     .startpage {
         grid-template-columns: 1fr;
         gap: 20px;
     }
+
     .calendar-day,
     .calendar-blank {
         width: 60px;
-        height: 60px;
+        height: 80px;
     }
+
+    .calendar-day p {
+        font-size: 14px;
+    }
+
+    .calendar-today-inner {
+        padding: 0;
+    }
+
+    .calendar-month {
+        gap: 5px;
+    }
+
+    .habit-color {
+        height: 8px;
+        width: 8px;
+    }
+
     .week-day {
         width: 60px;
-        height: 35px;
-        font-size: 12px;
+        font-size: 16px;
     }
 }
 
@@ -414,20 +438,45 @@ address {
         width: 90%;
     }
 
+    .habit_list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
     .week {
         flex-wrap: wrap;
         justify-content: center;
+        gap: 2px;
     }
 
     .calendar-day,
     .calendar-blank {
         width: 40px;
-        height: 40px;
+        height: 60px;
+        margin-bottom: 2px;
+    }
+
+    .calendar-day p {
         font-size: 12px;
+    }
+
+    .calendar-today {
+        margin: 4px;
+    }
+
+    .calendar-today-inner {
+        padding: 0;
     }
 
     .calendar-month {
         gap: 2px;
+    }
+
+    .habit-color {
+        height: 6px;
+        width: 6px;
     }
 
     .week-day {

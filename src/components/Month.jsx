@@ -325,12 +325,12 @@ function Month({ habits, owner, postsOfMonth, setPostsOfMonth }) {
                   const postForDay = postsOfMonth?.find(
                     (ele) => ele.date === toDayString(year, monthIndex, d),
                   );
-                  return (postForDay && postForDay.text.length>0) ? (
+                  return postForDay && postForDay.text.length > 0 ? (
                     <Tooltip title={postForDay.text} arrow>
                       <SmsIcon
                         sx={{
-                          height: "18px",
-                          width: "18px",
+                          height: { xs: "12px", sm: "14px", md: "16px"},
+                          width: { xs: "12px", sm: "14px", md: "16px" },
                           color: "#719daa",
                           cursor: "pointer",
                         }}
@@ -344,11 +344,9 @@ function Month({ habits, owner, postsOfMonth, setPostsOfMonth }) {
                   {d !== "" &&
                     getColorsForDay(new Date(year, monthIndex, d)).map(
                       (c, idx) => (
-                        <div
+                        <div className="habit-color"
                           key={idx}
                           style={{
-                            width: 10,
-                            height: 10,
                             backgroundColor: c,
                             borderRadius: 3,
                           }}
