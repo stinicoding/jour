@@ -23,6 +23,7 @@ function App() {
   const [today, setToday] = useState(
     `${String(new Date().getFullYear())}-${String(new Date().getMonth() + 1).padStart(2, "0")}-${String(new Date().getDate()).padStart(2, "0")}`,
   );
+  const [postsOfMonth, setPostsOfMonth] = useState([]);
 
   const habits = [...goodHabits, ...badHabits];
 
@@ -52,7 +53,7 @@ function App() {
     let user = { email: decodedToken.userEmail };
     localStorage.setItem("token", JSON.stringify(token));
     localStorage.setItem("user", JSON.stringify(user));
-    setToken(token)
+    setToken(token);
     setUser(user);
     setIsLoggedIn(true);
   };
@@ -84,9 +85,19 @@ function App() {
                       setBadHabits={setBadHabits}
                       owner={user?.email}
                     />
-                    <Journal owner={user?.email} today={today} />
+                    <Journal
+                      owner={user?.email}
+                      today={today}
+                      postsOfMonth={postsOfMonth}
+                      setPostsOfMonth={setPostsOfMonth}
+                    />
                   </div>
-                  <Month habits={habits} owner={user?.email} />
+                  <Month
+                    habits={habits}
+                    owner={user?.email}
+                    postsOfMonth={postsOfMonth}
+                    setPostsOfMonth={setPostsOfMonth}
+                  />
                 </div>
               ) : (
                 <div>

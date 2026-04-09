@@ -9,7 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import SmsIcon from "@mui/icons-material/Sms";
 import Tooltip from "@mui/material/Tooltip";
 
-function Month({ habits, owner }) {
+function Month({ habits, owner, postsOfMonth, setPostsOfMonth }) {
   const [year, setYear] = useState(new Date().getFullYear());
   const [monthIndex, setMonthIndex] = useState(new Date().getMonth());
   const [monthName, setMonthName] = useState(
@@ -24,7 +24,6 @@ function Month({ habits, owner }) {
   const [checked, setChecked] = useState({});
   const [trackedOfMonth, setTrackedOfMonth] = useState([]);
   const [habitsPerDay, setHabitsPerDay] = useState({});
-  const [postsOfMonth, setPostsOfMonth] = useState([]);
   const [input, setInput] = useState("");
 
   //console.log(year);
@@ -326,7 +325,7 @@ function Month({ habits, owner }) {
                   const postForDay = postsOfMonth?.find(
                     (ele) => ele.date === toDayString(year, monthIndex, d),
                   );
-                  return postForDay ? (
+                  return (postForDay && postForDay.text.length>0) ? (
                     <Tooltip title={postForDay.text} arrow>
                       <SmsIcon
                         sx={{
